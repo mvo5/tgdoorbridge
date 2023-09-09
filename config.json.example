@@ -1,0 +1,10 @@
+{
+    "hostname": "",
+    "port": 8081,
+
+    "intercom-img-caption": "klingeling",
+    "intercom-img-url": "http://akuvox-e12w:8080/picture.cgi",
+
+    "telegram-bot-token": "your-token",
+    "telegram-chat-id": "chat-id"
+}

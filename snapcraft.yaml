@@ -1,0 +1,20 @@
+name: tgdoorbridge-mvo
+summary: Tg door bridge
+description: |
+      tg door bridge
+version: git
+grade: stable
+base: core20
+
+apps:
+  tgdoorbridge:
+    command: bin/tgdoorbridge
+    daemon: simple
+    plugs: ["network-bind"]
+
+parts:
+  tgdoorbridge:
+    plugin: python
+    requirements: ["requirements.txt"]
+    source: .
+
