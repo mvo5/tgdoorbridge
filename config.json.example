@@ -4,6 +4,7 @@
 
     "intercom-img-caption": "klingeling",
     "intercom-img-url": "http://akuvox-e12w:8080/picture.cgi",
+    "intercom-trigger-path": "/door1", 
 
     "telegram-bot-token": "your-token",
     "telegram-chat-id": "chat-id"
