@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import logging
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import os.path
@@ -19,9 +20,10 @@ def tg_send_photo():
     cfg = load_config()
     tgbot = telegram.bot.Bot(cfg["telegram-bot-token"])
     chat_id = cfg["telegram-chat-id"]
-    #tgbot.send_message(chat_id, "klingeling")
+    caption = cfg.get("intercom-img-caption", "ring, ring")
+    # XXX: exceptons are not logged right now
     f = urllib.request.urlopen(cfg["intercom-img-url"])
-    tgbot.send_photo(chat_id, f, caption="klingening")
+    tgbot.send_photo(chat_id, f, caption=caption)
     
     
 class TgDoorBridge(BaseHTTPRequestHandler):
@@ -33,6 +35,7 @@ class TgDoorBridge(BaseHTTPRequestHandler):
 
 def main():
     cfg = load_config()
+    logging.basicConfig(level=logging.INFO)
 
     srv = HTTPServer((cfg["hostname"], cfg["port"]), TgDoorBridge)
     print("tg door bridge http://%s:%s" % (cfg["hostname"], cfg["port"]))
