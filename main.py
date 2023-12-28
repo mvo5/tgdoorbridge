@@ -4,6 +4,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import os.path
 import urllib.request
+import time
 
 import telegram.bot
 
@@ -21,7 +22,15 @@ def tg_send_photo():
     chat_id = cfg["telegram-chat-id"]
     #tgbot.send_message(chat_id, "klingeling")
     f = urllib.request.urlopen(cfg["intercom-img-url"])
-    tgbot.send_photo(chat_id, f, caption="klingening")
+    msg=tgbot.send_photo(chat_id, f, caption="klingening")
+    # to do: move to thread 
+    tg_delete_photo(tgbot, chat_id, msg_id=msg.message_id)
+
+
+def tg_delete_photo(tgbot, chat_id, msg_id):
+    time.sleep(3.600) # 1 hour
+    tgbot.delete_message(chat_id,msg_id)
+
     
     
 class TgDoorBridge(BaseHTTPRequestHandler):
