@@ -25,26 +25,26 @@ def tg_send_photo():
     caption = cfg.get("intercom-img-caption", "ring, ring")
     # XXX: exceptons are not logged right now
     f = urllib.request.urlopen(cfg["intercom-img-url"])
-    msg=tgbot.send_photo(chat_id, f, caption=caption)
+    msg = tgbot.send_photo(chat_id, f, caption=caption)
     t = threading.Thread(target=tg_delete_photo, args=(tgbot, chat_id, msg.message_id))
     t.start()
 
 
 def tg_delete_photo(tgbot, chat_id, msg_id):
     cfg = load_config()
-    delete_delay = cfg.get("intercom-img-delete-delay", 60*60*60)
+    delete_delay = cfg.get("intercom-img-delete-delay", 60 * 60 * 60)
     if delete_delay <= 0:
         return
     time.sleep(delete_delay)
-    tgbot.delete_message(chat_id,msg_id)
+    tgbot.delete_message(chat_id, msg_id)
 
-    
+
 class TgDoorBridge(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
         tg_send_photo()
-        
+
 
 def main():
     cfg = load_config()
@@ -59,7 +59,6 @@ def main():
         pass
 
     srv.server_close()
-
 
 
 if __name__ == "__main__":
