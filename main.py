@@ -32,7 +32,7 @@ def tg_send_photo():
 
 def tg_delete_photo(tgbot, chat_id, msg_id):
     cfg = load_config()
-    delete_delay = cfg.get("intercom-img-delete-delay", 60 * 60 * 60)
+    delete_delay = cfg.get("intercom-img-delete-delay", 1 * 60 * 60)
     if delete_delay <= 0:
         return
     time.sleep(delete_delay)
