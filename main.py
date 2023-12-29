@@ -6,6 +6,7 @@ import json
 import os.path
 import urllib.request
 import time
+import threading
 
 import telegram.bot
 
@@ -25,14 +26,18 @@ def tg_send_photo():
     # XXX: exceptons are not logged right now
     f = urllib.request.urlopen(cfg["intercom-img-url"])
     msg=tgbot.send_photo(chat_id, f, caption=caption)
-    # to do: move to thread 
-    tg_delete_photo(tgbot, chat_id, msg_id=msg.message_id)
+    t = threading.Thread(target=tg_delete_photo, args=(tgbot, chat_id, msg.message_id))
+    t.start()
 
 
 def tg_delete_photo(tgbot, chat_id, msg_id):
-    time.sleep(3.600) # 1 hour
+    cfg = load_config()
+    delete_delay = cfg.get("intercom-img-delete-delay", 60*60*60)
+    if delete_delay <= 0:
+        return
+    time.sleep(delete_delay)
     tgbot.delete_message(chat_id,msg_id)
-    
+
     
 class TgDoorBridge(BaseHTTPRequestHandler):
     def do_GET(self):
